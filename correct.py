@@ -38,7 +38,7 @@ if __name__ == '__main__':
   camPlaneOriginY=camDirY + 0.5*camUpY - 0.5*camRightY;
   camPlaneOriginZ=camDirZ + 0.5*camUpZ - 0.5*camRightZ;
   FOV = math.pi * 130./180.; #FOV of the fisheye, eg: 180 degrees   
-  #print(camPlaneOriginX,camPlaneOriginY,camPlaneOriginZ)    
+ 
   size = dest_height, dest_width, 3
   dest = np.zeros(size, dtype=np.float) 
   #print(src_width,src_height)
@@ -59,27 +59,21 @@ if __name__ == '__main__':
       # Pixel in fisheye space
       theta_i=math.floor(0.5 * src_width + r * math.sin(theta));
       phi_i=math.floor(0.5 * src_height - r * math.cos(theta));
+      
       # rayNorm=1.0/Math.sqrt(rayX*rayX + rayY*rayY + rayZ*rayZ);
       dest_offset=(i*dest_width+j);
       src_offset=(phi_i*src_width + theta_i);
       y = max(min(int(phi_i),src_height-1),1)
       x = max(min(int(theta_i),src_width-1),1)
-      #print(img[y,x,0])
-      #print(fx)
-      #dest[i,j,0] = 0.5
-      #dest[i,j,1] = 0.5
-      #dest[i,j,2] = 0.5
-      
+
+      # Implement your interpolation code here
       dest[i,j,0] = img[y,x,0]/255.
       dest[i,j,1] = img[y,x,1]/255.
       dest[i,j,2] = img[y,x,2]/255.
-      #pixels[dest_offset+1]   = img_buffer[src_offset+1];
-      #pixels[dest_offset+2]   = img_buffer[src_offset+2];
-      #pixels[dest_offset+3] = img_buffer[src_offset+3];
 
-  #print(width)
-  #print(height)
 
+  cv2.imwrite('out.jpg',dest*255)
   cv2.imshow('show',dest)
   cv2.waitKey(3000)
   cv2.destroyAllWindows()
+ 
